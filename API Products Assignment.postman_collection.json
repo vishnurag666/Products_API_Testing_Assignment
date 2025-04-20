@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "f00986c9-0edc-4887-a4dd-0e9226e55487",
+		"name": "API Products Assignment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42427101",
+		"_collection_link": "https://www.postman.com/science-geologist-56955562/workspace/my-workspace/collection/42427101-f00986c9-0edc-4887-a4dd-0e9226e55487?action=share&source=collection_link&creator=42427101"
+	},
+	"item": [
+		{
+			"name": "Fetch All Products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyjson.com/products",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Print the Total Number of Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let products= pm.response.json();\r",
+							"let totalProduct=0;\r",
+							"pm.test(\"Total Product\", function () {  \r",
+							"    for (let i = 0; i < products.length; i++) {\r",
+							"        totalProduct++;\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"pm.test(\"First 5 product titles and prices\", function () {\r",
+							"    for (let i = 0; i < 5; i++) {\r",
+							"        console.log(`Title: ${products[i].title}, Price: ${products[i].price}`);\r",
+							"    }\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyjson.com/products",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product With ID 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search products with the keyword \"phone\"",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch all products in the \"smartphones\" category.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let products = pm.response.json().products;\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));\r",
+							"\r",
+							"pm.test(\"All products belong to 'smartphones' category\", () => {\r",
+							"    products.forEach(products => pm.expect(products.category).to.eql(\"smartphones\"));\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://dummyjson.com/products/category/smartphones",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products",
+						"category",
+						"smartphones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a new product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let newProduct = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));\r",
+							"pm.test(\"Product is added with valid ID\", () => {\r",
+							"    pm.expect(newProduct).to.have.property(\"id\");\r",
+							"    pm.expect(newProduct.title).to.eql(\"Wireless Headphones\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{vault:authorization-secret}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Wireless Headphones\",\r\n  \"price\": 129,\r\n  \"description\": \"Noise-cancelling over-ear headphones\",\r\n  \"category\": \"audio\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dummyjson.com/products/add",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update the Price of Product 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let updatedProduct = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));\r",
+							"pm.test(\"Price updated to 499\", () => {\r",
+							"    pm.expect(updatedProduct.price).to.eql(499);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": 499\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dummyjson.com/products/1",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));\r",
+							"pm.test(\"Product deleted confirmation\", () => {\r",
+							"    pm.expect(res).to.have.property(\"isDeleted\", true);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://dummyjson.com/products/1",
+					"protocol": "https",
+					"host": [
+						"dummyjson",
+						"com"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
